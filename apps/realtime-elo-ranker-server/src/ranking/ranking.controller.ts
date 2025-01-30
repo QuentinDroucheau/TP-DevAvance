@@ -1,20 +1,16 @@
 import { Controller, HttpStatus } from '@nestjs/common';
 import { RankingService } from './ranking.service';
-import { PlayerService } from '../player/player.service';
 import { Get } from '@nestjs/common';
 import { HttpException } from '@nestjs/common/exceptions/http.exception';
 
 @Controller('api/ranking')
 export class RankingController {
-  constructor(
-    private rankingService: RankingService,
-    private playerService: PlayerService,
-  ) {}
+  constructor(private rankingService: RankingService) {}
 
   @Get()
   async getRanking(): Promise<any> {
-    const players = await this.playerService.findAll();
-    if (players.length === 0) {
+    const ranking = await this.rankingService.getRanking();
+    if (ranking.length === 0) {
       throw new HttpException(
         {
           code: 0,
@@ -24,6 +20,6 @@ export class RankingController {
       );
     }
 
-    return players;
+    return ranking;
   }
 }

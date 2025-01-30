@@ -11,6 +11,13 @@ export class PlayerService {
   ) {}
 
   async create(player: Player): Promise<Player> {
+    const players = await this.playerRepository.find();
+    let rankAvg = 983;
+    players.forEach((p) => {
+      rankAvg += p.rank;
+    });
+    rankAvg = rankAvg / players.length;
+    player.rank = rankAvg;
     return this.playerRepository.save(player);
   }
 

@@ -1,12 +1,23 @@
 import { Injectable } from '@nestjs/common';
-import { MatchService } from '../match/match.service';
+import { PlayerService } from 'src/player/player.service';
+import { Player } from 'src/player/player.entity';
 
 @Injectable()
 export class RankingService {
-  constructor(private matchService: MatchService) {}
+  private ranking: Player[];
 
-  async getRanking(): Promise<any> {
-    const matchs = this.matchService.getMatchs();
-    return matchs;
+  constructor(private playerService: PlayerService) {}
+
+  async getRanking(): Promise<Player[]> {
+    const players = await this.playerService.findAll();
+    if (players.length === 0) {
+      return [];
+    }
+
+    this.ranking = players.sort((a, b) => {
+      return b.rank - a.rank;
+    });
+
+    return this.ranking;
   }
 }

@@ -12,7 +12,7 @@ import { RankingModule } from './ranking/ranking.module';
     MatchModule,
     TypeOrmModule.forRoot({
       type: 'sqlite',
-      database: 'db',
+      database: 'db.db',
       entities: [__dirname + '/**/*.entity{.ts,.js}'],
       synchronize: true,
     }),
