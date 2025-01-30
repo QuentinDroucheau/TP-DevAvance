@@ -5,7 +5,7 @@ import { MatchService } from '../match/match.service';
 export class RankingService {
   constructor(private matchService: MatchService) {}
 
-  getRanking(): Promise<any> {
+  async getRanking(): Promise<any> {
     const matchs = this.matchService.getMatchs();
     return matchs;
   }

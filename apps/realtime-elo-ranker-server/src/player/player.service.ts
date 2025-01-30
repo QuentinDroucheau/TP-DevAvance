@@ -10,15 +10,15 @@ export class PlayerService {
     private playerRepository: Repository<Player>,
   ) {}
 
-  create(player: Player): Promise<Player> {
+  async create(player: Player): Promise<Player> {
     return this.playerRepository.save(player);
   }
 
-  findOne(id: string): Promise<Player | null> {
+  async findOne(id: string): Promise<Player | null> {
     return this.playerRepository.findOneBy({ id });
   }
 
-  findAll(): Promise<Player[]> {
+  async findAll(): Promise<Player[]> {
     return this.playerRepository.find();
   }
 }
