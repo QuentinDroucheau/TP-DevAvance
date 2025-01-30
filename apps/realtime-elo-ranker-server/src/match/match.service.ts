@@ -13,4 +13,8 @@ export class MatchService {
   create(match: Match): Promise<Match> {
     return this.matchRepository.save(match);
   }
+
+  getMatchs(): Promise<Match[]> {
+    return this.matchRepository.find();
+  }
 }

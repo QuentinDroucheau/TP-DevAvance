@@ -9,5 +9,6 @@ import { PlayerModule } from '../player/player.module';
   imports: [TypeOrmModule.forFeature([Match]), PlayerModule],
   controllers: [MatchController],
   providers: [MatchService],
+  exports: [MatchService],
 })
 export class MatchModule {}

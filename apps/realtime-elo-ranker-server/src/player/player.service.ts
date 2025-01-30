@@ -17,4 +17,8 @@ export class PlayerService {
   findOne(id: string): Promise<Player | null> {
     return this.playerRepository.findOneBy({ id });
   }
+
+  findAll(): Promise<Player[]> {
+    return this.playerRepository.find();
+  }
 }
