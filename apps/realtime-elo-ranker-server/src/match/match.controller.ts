@@ -1,40 +1,30 @@
-import { Body, Controller, HttpStatus, Post } from '@nestjs/common';
+import { Body, Controller, Post } from '@nestjs/common';
 import { MatchService } from './match.service';
 import { Match } from './match.entity';
-import { PlayerService } from 'src/player/player.service';
-import { HttpException } from '@nestjs/common/exceptions/http.exception';
-
+import { Response } from 'express';
+import { Res } from '@nestjs/common';
 @Controller('api/match')
 export class MatchController {
-  constructor(
-    private matchService: MatchService,
-    private playerService: PlayerService,
-  ) {}
+  constructor(private matchService: MatchService) {}
 
   @Post()
-  async createMatch(@Body() matchData: Match): Promise<any> {
-    const { winner, loser } = matchData;
-
-    // vérication de l'existence des joueurs
-    const findPlayerWinner = await this.playerService.findOne(winner);
-    const findPlayerLoser = await this.playerService.findOne(loser);
-    if (!findPlayerWinner || !findPlayerLoser) {
-      throw new HttpException(
-        {
-          code: 0,
-          message: "Soit le gagnant, soit le perdant indiqué n'existe pas",
-        },
-        HttpStatus.UNPROCESSABLE_ENTITY,
-      );
-    }
-
-    await this.matchService.create(matchData);
-    throw new HttpException(
-      {
-        winner: findPlayerWinner,
-        loser: findPlayerLoser,
-      },
-      HttpStatus.OK,
-    );
+  async createMatch(
+    @Body() matchData: Match,
+    @Res() res: Response,
+  ): Promise<any> {
+    return new Promise(() => {
+      this.matchService.create(matchData, (result: { code: number }) => {
+        let statusCode = 200;
+        switch (result.code) {
+          case this.matchService.PLAYERS_NOT_FOUND:
+            statusCode = 400;
+            break;
+          case this.matchService.ERROR_CREATING_MATCH:
+            statusCode = 500;
+            break;
+        }
+        res.status(statusCode).json(result);
+      });
+    });
   }
 }

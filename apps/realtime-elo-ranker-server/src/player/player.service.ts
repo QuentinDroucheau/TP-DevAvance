@@ -8,6 +8,8 @@ export class PlayerService {
   ID_PLAYER_NOT_VALID = 1;
   PLAYER_ALREADY_EXISTS = 2;
   ERROR_CREATING_PLAYER = 3;
+  ERROR_GETTING_PLAYER = 4;
+  ERROR_GETTING_PLAYERS = 5;
 
   constructor(
     @InjectRepository(Player)
@@ -50,11 +52,27 @@ export class PlayerService {
       });
   }
 
-  async findOne(id: string): Promise<Player | null> {
-    return this.playerRepository.findOneBy({ id });
+  findOne(id: string, callback: (result: any) => void): void {
+    this.playerRepository
+      .findOneBy({ id })
+      .then((player) => callback(player))
+      .catch(() =>
+        callback({
+          code: this.ERROR_GETTING_PLAYER,
+          message: 'Erreur lors de la récupération du joueur',
+        }),
+      );
   }
 
-  async findAll(): Promise<Player[]> {
-    return this.playerRepository.find();
+  findAll(callback: (result: any) => void): void {
+    this.playerRepository
+      .find()
+      .then((players) => callback(players))
+      .catch(() =>
+        callback({
+          code: this.ERROR_GETTING_PLAYERS,
+          message: 'Erreur lors de la récupération des joueurs',
+        }),
+      );
   }
 }
