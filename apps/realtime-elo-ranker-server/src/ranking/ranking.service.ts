@@ -56,13 +56,13 @@ export class RankingService {
     const winnerElo = this.calculateNewRank(
       winnerPlayer.rank,
       loserPlayer.rank,
-      1,
+      winner == loser ? 0.5 : 1,
     );
 
     const loserElo = this.calculateNewRank(
       loserPlayer.rank,
       winnerPlayer.rank,
-      0,
+      winner == loser ? 0.5 : 0,
     );
 
     winnerPlayer.rank = winnerElo;
