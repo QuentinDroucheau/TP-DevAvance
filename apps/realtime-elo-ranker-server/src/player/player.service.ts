@@ -3,6 +3,7 @@ import { Player } from './player.entity';
 import { Repository } from 'typeorm';
 import { Injectable } from '@nestjs/common';
 import { RankingService } from 'src/ranking/ranking.service';
+import { EventEmitter2 } from '@nestjs/event-emitter';
 
 @Injectable()
 export class PlayerService {
@@ -16,6 +17,7 @@ export class PlayerService {
     @InjectRepository(Player)
     private playerRepository: Repository<Player>,
     private rankingService: RankingService,
+    private eventEmitter: EventEmitter2,
   ) {
     this.findAll((players) => {
       if (players instanceof Array) {
@@ -45,6 +47,10 @@ export class PlayerService {
             .save(player)
             .then((player) => {
               this.rankingService.addPlayer(player);
+              this.eventEmitter.emit('RankingUpdate', {
+                id: player.id,
+                rank: player.rank,
+              });
               callback(player);
             })
             .catch(() =>
