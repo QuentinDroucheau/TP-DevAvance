@@ -34,6 +34,16 @@ export class PlayerService {
       });
     }
 
+    this.findAll((players: Player[]) => {
+      let totalRank = 0;
+      players.forEach((player) => {
+        totalRank += player.rank;
+      });
+      player.rank = Math.round(
+        players.length > 0 ? totalRank / players.length : 0,
+      );
+    });
+
     this.playerRepository
       .findOneBy({ id: player.id })
       .then((existingPlayer) => {
