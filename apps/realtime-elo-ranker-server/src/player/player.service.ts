@@ -2,6 +2,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Player } from './player.entity';
 import { Repository } from 'typeorm';
 import { Injectable } from '@nestjs/common';
+import { RankingService } from 'src/ranking/ranking.service';
 
 @Injectable()
 export class PlayerService {
@@ -14,7 +15,14 @@ export class PlayerService {
   constructor(
     @InjectRepository(Player)
     private playerRepository: Repository<Player>,
-  ) {}
+    private rankingService: RankingService,
+  ) {
+    this.findAll((players) => {
+      if (players instanceof Array) {
+        this.rankingService.setRanking(players);
+      }
+    });
+  }
 
   create(player: Player, callback: (result: any) => void): void {
     if (!player.id || player.id === '') {
@@ -35,7 +43,10 @@ export class PlayerService {
         } else {
           this.playerRepository
             .save(player)
-            .then((player) => callback(player))
+            .then((player) => {
+              this.rankingService.addPlayer(player);
+              callback(player);
+            })
             .catch(() =>
               callback({
                 code: this.ERROR_CREATING_PLAYER,
@@ -72,6 +83,18 @@ export class PlayerService {
         callback({
           code: this.ERROR_GETTING_PLAYERS,
           message: 'Erreur lors de la récupération des joueurs',
+        }),
+      );
+  }
+
+  update(player: Player, callback: (result: any) => void): void {
+    this.playerRepository
+      .save(player)
+      .then((player) => callback(player))
+      .catch(() =>
+        callback({
+          code: this.ERROR_CREATING_PLAYER,
+          message: 'Erreur lors de la mise à jour du joueur',
         }),
       );
   }

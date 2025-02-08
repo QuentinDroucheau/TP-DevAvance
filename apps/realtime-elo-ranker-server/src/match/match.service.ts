@@ -3,6 +3,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Match } from './match.entity';
 import { PlayerService } from 'src/player/player.service';
 import { Repository } from 'typeorm';
+import { RankingService } from 'src/ranking/ranking.service';
 
 @Injectable()
 export class MatchService {
@@ -13,6 +14,7 @@ export class MatchService {
     @InjectRepository(Match)
     private matchRepository: Repository<Match>,
     private playerService: PlayerService,
+    private rankingService: RankingService,
   ) {}
 
   create(match: Match, callback: (result: any) => void): void {
@@ -37,9 +39,8 @@ export class MatchService {
         this.matchRepository
           .save(match)
           .then(() => {
-            return callback({
-              winner,
-              loser,
+            this.rankingService.updateRanking(winner, loser, (result: any) => {
+              return callback(result);
             });
           })
           .catch(() => {
