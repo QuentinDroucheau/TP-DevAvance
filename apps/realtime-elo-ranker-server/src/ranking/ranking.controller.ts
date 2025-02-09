@@ -5,7 +5,6 @@ import { Response } from 'express';
 import { HttpStatus } from '@nestjs/common';
 import { Res } from '@nestjs/common';
 import { EventEmitter2 } from '@nestjs/event-emitter';
-import { resolve } from 'path';
 
 @Controller('api/ranking')
 export class RankingController {

@@ -8,7 +8,7 @@ import { EventEmitter2 } from '@nestjs/event-emitter';
 export class RankingService {
   PLAYERS_NOT_FOUND = 1;
 
-  COEFF_PONDERATION = 20;
+  COEFF_PONDERATION = 32;
 
   private ranking: Player[];
 
@@ -55,13 +55,13 @@ export class RankingService {
 
     const winnerElo = this.calculateNewRank(
       winnerPlayer.rank,
-      loserPlayer.rank,
+      this.calculateWinProbability(winnerPlayer.rank, loserPlayer.rank),
       winner == loser ? 0.5 : 1,
     );
 
     const loserElo = this.calculateNewRank(
       loserPlayer.rank,
-      winnerPlayer.rank,
+      this.calculateWinProbability(loserPlayer.rank, winnerPlayer.rank),
       winner == loser ? 0.5 : 0,
     );
 
@@ -91,18 +91,14 @@ export class RankingService {
   }
 
   calculateWinProbability(playerRank: number, opponentRank: number): number {
-    return 1 / (1 + 10 ** ((opponentRank - playerRank) / 400));
+    return 1 / (1 + 10 ** ((playerRank - opponentRank) / 400));
   }
 
   calculateNewRank(
     currentRank: number,
-    opponentRank: number,
+    winProbability: number,
     result: number,
   ): number {
-    const winProbability = this.calculateWinProbability(
-      currentRank,
-      opponentRank,
-    );
     return Math.round(
       currentRank + this.COEFF_PONDERATION * (result - winProbability),
     );

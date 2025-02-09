@@ -13,15 +13,7 @@ describe('RankingController', () => {
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
-      imports: [
-        TypeOrmModule.forRoot({
-          type: 'sqlite',
-          database: ':memory:',
-          entities: [Player],
-          synchronize: true,
-        }),
-        TypeOrmModule.forFeature([Player]),
-      ],
+      imports: [],
       controllers: [RankingController],
       providers: [
         RankingService,
