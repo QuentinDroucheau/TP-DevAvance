@@ -31,6 +31,7 @@ export class RankingController {
 
   @Get('events')
   subscribeRankingUpdate(@Res() res: Response): void {
+    console.log('Abonnement à la mise à jour du classement');
     res.setHeader('Content-Type', 'text/event-stream');
     res.setHeader('Cache-Control', 'no-cache');
     res.setHeader('Connection', 'keep-alive');

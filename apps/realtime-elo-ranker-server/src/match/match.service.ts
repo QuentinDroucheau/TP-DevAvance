@@ -22,6 +22,7 @@ export class MatchService {
 
     this.playerService.findOne(winner, (result: any) => {
       if (result == null) {
+        console.log("Le gagnant indiqué n'existe pas");
         return callback({
           code: this.PLAYERS_NOT_FOUND,
           message: "Le gagnant indiqué n'existe pas",
@@ -30,6 +31,7 @@ export class MatchService {
 
       this.playerService.findOne(loser, (result: any) => {
         if (result == null) {
+          console.log("Le perdant indiqué n'existe pas");
           return callback({
             code: this.PLAYERS_NOT_FOUND,
             message: "Le perdant indiqué n'existe pas",
@@ -49,6 +51,7 @@ export class MatchService {
             );
           })
           .catch(() => {
+            console.log('Erreur lors de la création du match');
             return callback({
               code: this.ERROR_CREATING_MATCH,
               message: 'Erreur lors de la création du match',

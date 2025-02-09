@@ -26,6 +26,9 @@ export class RankingService {
 
   getRanking(callback: (result: any) => void): void {
     if (this.ranking.length < 1) {
+      console.log(
+        "Le classement n'est pas disponible car aucun joueur n'existe",
+      );
       callback({
         code: this.PLAYERS_NOT_FOUND,
         message: "Le classement n'est pas disponible car aucun joueur n'existe",
@@ -72,8 +75,12 @@ export class RankingService {
     this.playerService.update(winnerPlayer, () => {});
     this.playerService.update(loserPlayer, () => {});
 
+    console.log('Mise à jour des joueurs');
+
     this.ranking[winnerIndex] = winnerPlayer;
     this.ranking[loserIndex] = loserPlayer;
+
+    console.log('Mise à jour du classement');
 
     this.eventEmitter.emit('RankingUpdate', {
       id: winnerPlayer.id,

@@ -28,6 +28,7 @@ export class PlayerService {
 
   create(player: Player, callback: (result: any) => void): void {
     if (!player.id || player.id === '') {
+      console.log("L'identifiant du joueur n'est pas valide");
       return callback({
         code: this.ID_PLAYER_NOT_VALID,
         message: "L'identifiant du joueur n'est pas valide",
@@ -48,6 +49,7 @@ export class PlayerService {
       .findOneBy({ id: player.id })
       .then((existingPlayer) => {
         if (existingPlayer) {
+          console.log('Le joueur existe déjà');
           return callback({
             code: this.PLAYER_ALREADY_EXISTS,
             message: 'Le joueur existe déjà',
@@ -56,7 +58,9 @@ export class PlayerService {
           this.playerRepository
             .save(player)
             .then((player) => {
+              console.log('Joueur créé');
               this.rankingService.addPlayer(player);
+              console.log('Mise à jour du classement');
               this.eventEmitter.emit('RankingUpdate', {
                 id: player.id,
                 rank: player.rank,
@@ -72,6 +76,7 @@ export class PlayerService {
         }
       })
       .catch(() => {
+        console.log('Erreur lors de la création du joueur');
         return callback({
           code: this.ERROR_CREATING_PLAYER,
           message: 'Erreur lors de la création du joueur',
