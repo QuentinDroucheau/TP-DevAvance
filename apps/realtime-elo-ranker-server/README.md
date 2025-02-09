@@ -4,6 +4,8 @@
 
 ```bash
 pnpm install
+
+pnpm run libs:ui:build
 ```
 
 ### Lancement des tests
