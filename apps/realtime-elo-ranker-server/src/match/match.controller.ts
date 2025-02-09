@@ -12,7 +12,7 @@ export class MatchController {
     @Body() matchData: Match,
     @Res() res: Response,
   ): Promise<any> {
-    return new Promise(() => {
+    return new Promise<void>((resolve) => {
       this.matchService.create(matchData, (result: { code: number }) => {
         let statusCode = 200;
         switch (result.code) {
@@ -24,6 +24,7 @@ export class MatchController {
             break;
         }
         res.status(statusCode).json(result);
+        resolve();
       });
     });
   }
