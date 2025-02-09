@@ -5,6 +5,7 @@ import { Response } from 'express';
 import { HttpStatus } from '@nestjs/common';
 import { Res } from '@nestjs/common';
 import { EventEmitter2 } from '@nestjs/event-emitter';
+import { resolve } from 'path';
 
 @Controller('api/ranking')
 export class RankingController {
@@ -14,15 +15,18 @@ export class RankingController {
   ) {}
 
   @Get()
-  getRanking(@Res() res: Response): void {
-    this.rankingService.getRanking((result: { code: number }) => {
-      let statusCode = 200;
-      switch (result.code) {
-        case this.rankingService.PLAYERS_NOT_FOUND:
-          statusCode = HttpStatus.NOT_FOUND;
-          break;
-      }
-      res.status(statusCode).json(result);
+  async getRanking(@Res() res: Response): Promise<any> {
+    return new Promise<void>((resolve) => {
+      this.rankingService.getRanking((result: { code: number }) => {
+        let statusCode = 200;
+        switch (result.code) {
+          case this.rankingService.PLAYERS_NOT_FOUND:
+            statusCode = HttpStatus.NOT_FOUND;
+            break;
+        }
+        res.status(statusCode).json(result);
+        resolve();
+      });
     });
   }
 
