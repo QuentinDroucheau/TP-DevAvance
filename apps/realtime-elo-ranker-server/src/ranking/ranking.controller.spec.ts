@@ -1,8 +1,6 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { RankingController } from './ranking.controller';
 import { RankingService } from './ranking.service';
-import { TypeOrmModule } from '@nestjs/typeorm';
-import { Player } from '../player/player.entity';
 import { PlayerService } from '../player/player.service';
 import { EventEmitter2 } from '@nestjs/event-emitter';
 import { HttpStatus } from '@nestjs/common';

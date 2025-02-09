@@ -6,14 +6,14 @@ import { Res } from '@nestjs/common';
 
 @Controller('api/player')
 export class PlayerController {
-  constructor(private readonly playerService: PlayerService) {}
+  constructor(private playerService: PlayerService) {}
 
   @Post()
   async createPlayer(
     @Body() playerData: Player,
     @Res() res: Response,
   ): Promise<any> {
-    return new Promise(() => {
+    return new Promise<void>((resolve) => {
       this.playerService.create(playerData, (result: { code: number }) => {
         let statusCode = 200;
         switch (result.code) {
@@ -28,6 +28,7 @@ export class PlayerController {
             break;
         }
         res.status(statusCode).json(result);
+        resolve();
       });
     });
   }
