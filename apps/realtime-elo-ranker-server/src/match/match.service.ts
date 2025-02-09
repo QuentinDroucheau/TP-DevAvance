@@ -18,7 +18,7 @@ export class MatchService {
   ) {}
 
   create(match: Match, callback: (result: any) => void): void {
-    const { winner, loser } = match;
+    const { winner, loser, draw } = match;
 
     this.playerService.findOne(winner, (result: any) => {
       if (result == null) {
@@ -39,9 +39,14 @@ export class MatchService {
         this.matchRepository
           .save(match)
           .then(() => {
-            this.rankingService.updateRanking(winner, loser, (result: any) => {
-              return callback(result);
-            });
+            this.rankingService.updateRanking(
+              winner,
+              loser,
+              draw,
+              (result: any) => {
+                return callback(result);
+              },
+            );
           })
           .catch(() => {
             return callback({

@@ -1,3 +1,7 @@
+# DROUCHEAU Quentin
+
+Les explications du travail réalisé sont disponibles dans le [README.md du serveur](apps/realtime-elo-ranker-server/README.md).
+
 # Realtime Elo Ranker
 
 Realtime Elo Ranker est une application web permettant de simuler des matchs entre des joueurs et de calculer et afficher leur classement Elo en temps réel.

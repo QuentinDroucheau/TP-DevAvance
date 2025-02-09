@@ -43,6 +43,7 @@ export class RankingService {
   updateRanking(
     winner: string,
     loser: string,
+    draw: boolean,
     callback: (result: any) => void,
   ): void {
     const winnerIndex = this.ranking.findIndex(
@@ -56,13 +57,13 @@ export class RankingService {
     const winnerElo = this.calculateNewRank(
       winnerPlayer.rank,
       this.calculateWinProbability(winnerPlayer.rank, loserPlayer.rank),
-      winner == loser ? 0.5 : 1,
+      draw ? 0.5 : 1,
     );
 
     const loserElo = this.calculateNewRank(
       loserPlayer.rank,
       this.calculateWinProbability(loserPlayer.rank, winnerPlayer.rank),
-      winner == loser ? 0.5 : 0,
+      draw ? 0.5 : 0,
     );
 
     winnerPlayer.rank = winnerElo;
