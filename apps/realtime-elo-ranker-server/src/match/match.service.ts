@@ -1,9 +1,9 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Match } from './match.entity';
-import { PlayerService } from 'src/player/player.service';
+import { PlayerService } from '../player/player.service';
 import { Repository } from 'typeorm';
-import { RankingService } from 'src/ranking/ranking.service';
+import { RankingService } from '../ranking/ranking.service';
 
 @Injectable()
 export class MatchService {
@@ -12,9 +12,9 @@ export class MatchService {
 
   constructor(
     @InjectRepository(Match)
-    private matchRepository: Repository<Match>,
-    private playerService: PlayerService,
-    private rankingService: RankingService,
+    private readonly matchRepository: Repository<Match>,
+    private readonly playerService: PlayerService,
+    private readonly rankingService: RankingService,
   ) {}
 
   create(match: Match, callback: (result: any) => void): void {

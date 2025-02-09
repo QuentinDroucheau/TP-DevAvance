@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
-import { Player } from 'src/player/player.entity';
-import { PlayerService } from 'src/player/player.service';
+import { Player } from '../player/player.entity';
+import { PlayerService } from '../player/player.service';
 import { Inject, forwardRef } from '@nestjs/common';
 import { EventEmitter2 } from '@nestjs/event-emitter';
 
@@ -14,8 +14,8 @@ export class RankingService {
 
   constructor(
     @Inject(forwardRef(() => PlayerService))
-    private playerService: PlayerService,
-    private eventEmitter: EventEmitter2,
+    private readonly playerService: PlayerService,
+    private readonly eventEmitter: EventEmitter2,
   ) {
     this.ranking = [];
   }

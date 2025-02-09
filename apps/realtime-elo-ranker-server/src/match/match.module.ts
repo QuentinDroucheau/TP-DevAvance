@@ -4,7 +4,7 @@ import { MatchService } from './match.service';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { Match } from './match.entity';
 import { PlayerModule } from '../player/player.module';
-import { RankingModule } from 'src/ranking/ranking.module';
+import { RankingModule } from '../ranking/ranking.module';
 
 @Module({
   imports: [TypeOrmModule.forFeature([Match]), PlayerModule, RankingModule],

@@ -6,7 +6,7 @@ import { Res } from '@nestjs/common';
 
 @Controller('api/player')
 export class PlayerController {
-  constructor(private playerService: PlayerService) {}
+  constructor(private readonly playerService: PlayerService) {}
 
   @Post()
   async createPlayer(

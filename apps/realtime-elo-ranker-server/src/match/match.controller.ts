@@ -5,7 +5,7 @@ import { Response } from 'express';
 import { Res } from '@nestjs/common';
 @Controller('api/match')
 export class MatchController {
-  constructor(private matchService: MatchService) {}
+  constructor(private readonly matchService: MatchService) {}
 
   @Post()
   async createMatch(

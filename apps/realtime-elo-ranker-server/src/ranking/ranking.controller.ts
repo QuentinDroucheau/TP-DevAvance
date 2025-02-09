@@ -9,8 +9,8 @@ import { EventEmitter2 } from '@nestjs/event-emitter';
 @Controller('api/ranking')
 export class RankingController {
   constructor(
-    private rankingService: RankingService,
-    private eventEmitter: EventEmitter2,
+    private readonly rankingService: RankingService,
+    private readonly eventEmitter: EventEmitter2,
   ) {}
 
   @Get()

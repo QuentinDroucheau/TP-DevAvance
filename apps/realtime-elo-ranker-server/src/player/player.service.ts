@@ -2,7 +2,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Player } from './player.entity';
 import { Repository } from 'typeorm';
 import { Injectable } from '@nestjs/common';
-import { RankingService } from 'src/ranking/ranking.service';
+import { RankingService } from '../ranking/ranking.service';
 import { EventEmitter2 } from '@nestjs/event-emitter';
 
 @Injectable()
@@ -15,9 +15,9 @@ export class PlayerService {
 
   constructor(
     @InjectRepository(Player)
-    private playerRepository: Repository<Player>,
-    private rankingService: RankingService,
-    private eventEmitter: EventEmitter2,
+    private readonly playerRepository: Repository<Player>,
+    private readonly rankingService: RankingService,
+    private readonly eventEmitter: EventEmitter2,
   ) {
     this.findAll((players) => {
       if (players instanceof Array) {

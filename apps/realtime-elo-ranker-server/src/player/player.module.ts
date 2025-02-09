@@ -3,7 +3,7 @@ import { PlayerController } from './player.controller';
 import { PlayerService } from './player.service';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { Player } from './player.entity';
-import { RankingModule } from 'src/ranking/ranking.module';
+import { RankingModule } from '../ranking/ranking.module';
 
 @Module({
   imports: [TypeOrmModule.forFeature([Player]), RankingModule],
